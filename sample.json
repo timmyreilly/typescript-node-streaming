@@ -1,0 +1,8 @@
+{
+    "time": "now",
+    "condition": false, 
+    "situation": true, 
+    "ripe" : true, 
+    "name": "tim", 
+    "details": ["12", 23, 3, "oi"] 
+}
