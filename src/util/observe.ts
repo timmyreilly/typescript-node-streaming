@@ -406,3 +406,100 @@ function mainFive() {
 
 console.log("main 5 >>>>>>>>");
 console.log(mainFive());
+
+// Doug Crawford suggests... class free object oriented programming. 
+// Looks something like this...
+/*
+class free: 
+
+got a function which will take some value to initialize it. Recommend it be an object - a JSON text to create new instances. 
+You can call another constructor to inherit it's stuff. In any case, you're going to create a new object and put it into an object called that. 
+You'll create all your member variables and everything that's going to become properties of the object
+Those methods will be functions which will close over the initialization variables and for all those method variables. 
+If it doesn't use this or that, you can take any of the functions out of the object and it will do the exact same thing. 
+Can pass any of those things without having to use a callback.
+Any methods for public or privledge get aspects, multiple inheritance, and all these rich patterns.
+
+This is dense.
+
+
+*/
+
+const jah = {
+    user: "tim",
+    title: "friday night monitors",
+    condition: true,
+    level: [1, 2, 3]
+}
+
+function listener(init){
+    var that = 
+}
+
+function getter(init){
+    var that = listener(init),
+        member, 
+        method = function() {
+
+        }
+}
+
+
+// one more example. Functional programming is coming to every other language.
+/*
+Functional Programming is good for a lot of the things we do. 
+We showed the rest of the languages how to do this.
+Paradigm shifts are hard.
+It's hard for paradigm shifts from a bad idea.
+Is your reason its a bad idea you get emotional. Then you might be wrong.
+
+Sources of Misunderstanding:
+The name
+Mispositioning
+Design Errors
+Bad Implementations
+The Browser
+Bad Books
+Substandard Standard
+
+JavaScript is available in a lot of different venues.
+
+Extreme range of ridiculous and sublime.
+Very sophisticated programmers and everything in between.
+It can do it well. Some people who don't know how to program are using it.
+Lots of complaints: not a language that I know. Languages to choose from...
+
+Pony up and learn how to JavaScript
+AJAX libraries to make the program experience in the browser.
+Not fast enough... We'll see.
+JavaScript has good parts! That's the incredible part. Intentional stuff was good.
+
+Load and go delivery.
+Loose typing.
+Objects as general containers.
+Prototypal inheritance
+Lambda - functions as first class objects
+Linkage through global variables - no linked in the browser, they all get loaded into a common global space. They're the central idea for linkage. Cross site scripting attacks enabled by this and not so good
+
+Numbers
+- 64 bit floating point, Does not map well to common understanding of arithmetic: 0.1 + 0.2 !== 0.3  is the most common error filed with mozilla. 
+- go to whole numbers and then divide back down. 
+NaN
+- NaN == NaN is false => This is toxic
+- NaN != Nan is true 
+
+parseInt function
+parseInt(value, 10) converts the value int a number. It stops at the first non-digit character. 
+
+string.length
+similar strings are equal
+chatAt, concat, indexOf
+
+Two Booleans: true, false;
+Boolean(value) returns true or false. 
+
+undefined - a value that isn't even that. 
+Falsy: false, null, undefined, "", 0, NaN
+
+
+*/
