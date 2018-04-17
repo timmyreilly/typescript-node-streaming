@@ -195,3 +195,124 @@ var factorial = function factorial(i, a){
 };
 
 document.writeln(factorial(4)); 
+
+var myObject = (function () {
+    var value = 0; 
+
+    return { 
+        incrememnt: function (inc) {
+            value += typeof inc === 'number' ? inc : 1; 
+        }, 
+        getValue: function ( ) {
+            return value; 
+        }
+    };
+}()); 
+
+var quo = function (status) {
+    return {
+        get_status: function ( ) {
+            return status; 
+        }
+    };
+};
+
+// Make an instance of quo. 
+
+var myQuo = quo("amazed"); 
+
+document.writeln(myQuo.get_status()); 
+
+// Let's look a more useful example: 
+
+// Define a function that sets a DOM node's color
+// to yellow and then fades it to white. 
+
+var fade = function(node) {
+    var level = 1; 
+    var step = function ( ) {
+        var hex = level.toString(16);
+        node.style.backgroundColor = '#FFFF' + hex + hex; 
+        if (level < 15) {
+            level += 1; 
+            setTimeout(step, 100); 
+        }
+    };
+    setTimeout(step, 100); 
+}
+
+fade(document.body); 
+
+// check out his back example. 
+
+// Make a function that assigns event handler functions to an array of nodes the wrong way. 
+// When you click on a node, an alert box is supposed to display the ordinal of the node. 
+// But it always displays the number of nodes instead. 
+
+var add_the_handlers = function(nodes) {
+    var i; 
+    for (i = 0; i < nodes.length; i += 1) {
+        nodes[i].onclick = function (e) {
+            alert(i); 
+        };
+    }
+};
+
+// It fails because the handler functions are bound to the variable i, not the value of the variable i at the time the function was made. 
+
+// Here's a better example..
+
+// Make a function that assigns event handler functions to an array of nodes. 
+// When you click on a node, an alert box will display the ordinal of the node. 
+
+var add_the_handlers = function (nodes) {
+    var helper = function (i) {
+        return function (e) {
+            alert(i); 
+        };
+    };
+    var i; 
+    for (i = 0; i < nodes.length; i += 1) {
+        nodes[i].onclick = helper(i); 
+    }
+};
+
+// Callbacks
+
+// request = prepare_the_request ( ); 
+// send_request_asynchronously(request, function(response) {
+//     display(response); 
+// });
+
+String.method('deentityify', function ( ) {
+    // the entity table. it maps entity names to characters. 
+
+    var entity = {
+        quot: '"',
+        lt: '<',
+        gt: '>'
+    };
+
+    // Return the deentityify method.
+
+    return function ( ) {
+        // This is the deentityify method. It call the string
+        // replace method, looking for substring that start 
+        // with '&' and end with ';'. If the characters in
+        // between are in the entity table, then replace the 
+        // entity with the character from the table. It uses
+        // a regular expression
+
+        return this.replace(/&([^&;]+);/g, 
+            function (a, b) {
+                var r = entity[b]; 
+                return typeof r === 'string' ? r : a; 
+            }
+        );
+    };
+}( ));
+
+document.writeln( '&lt;&quot;&gt;'.deentityify( )); 
+
+// This is weird. 
+
