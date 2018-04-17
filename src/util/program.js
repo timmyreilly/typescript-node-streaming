@@ -1,3 +1,4 @@
+
 document.writeln("hello world"); 
 
 // Function literal: 
@@ -315,4 +316,314 @@ String.method('deentityify', function ( ) {
 document.writeln( '&lt;&quot;&gt;'.deentityify( )); 
 
 // This is weird. 
+
+var serial_maker = function ( ) {
+    // Produce an object that produces unique strings. A 
+    // unique string is made up of two pars: a prefix
+    // and a sequence number. The object comes with 
+    // methods for setting the prefex and sequence number,
+    // and a gensym method that produces unique strings. 
+
+    var prefix = ''; 
+    var seq = 0; 
+    return {
+        set_prefix: function (p) {
+            prefix = String(p); 
+        },
+        set_seq: function (s) {
+            seq = s; 
+        },
+        gensym: function ( ) {
+            var result = prefix + seq; 
+            seq += 1; 
+            return result; 
+        }
+    };
+};
+
+var seqer = serial_maker( ); 
+seqer.set_prefix('Q'); 
+seqer.set_seq(1000); 
+var unique = seqer.gensym( ); 
+var unique1 = seqer.gensym( ); 
+var unique2 = seqer.gensym( ); 
+
+document.writeln(`1 ${unique} 2 ${unique1} 3 ${unique2}`); 
+
+// DANG that's kinda cool. 
+
+// CASCADES
+
+// getElementsByAttribute('myBoxDiv')
+// .move(350, 150)
+// .width(100)
+// .height(100)
+// .color('red')
+// .border('10px outset')
+// .padding('4px')
+// .appendText("Please stand by")
+// .on('mousedown', function (m) {
+//     this.startDrag(m, this.getNinth(m));
+// })
+// .on('mousemove', 'drag')
+// .on('mouseup', 'stopDrag')
+// .later(2000, function ( ) {
+//     this
+//         .color('yellow')
+//         .setHTML("What hath God wraught?")
+//         .slide(400, 40, 200, 200); 
+// })
+// .tip("This box is resizeable") 
+
+// Each interface does just a little bit. 
+
+
+Function.method('curry', function ( ){
+    var slice = Array.prototype.slice, 
+        args = slice.apply(arguments),
+        that = this; 
+    return function ( ) {
+        return that.apply(null, args.concat(slice.apply(arguments)));
+    };
+});  // Something isn't right... 
+
+var add1 = add.curry(1); 
+document.writeln(add1(6)); 
+
+// Not memorization... Memoization 
+
+var fibonacci = function (n) {
+    return n < 2 ? n : fibonacci(n - 1) + fibonacci(n - 2); 
+};
+
+for (var i = 0; i <= 10; i += 1) {
+    document.writeln('// ' + i + ': ' + fibonacci(i)); 
+}
+
+// This is expensive and dumb. Let's use memoization to save our recently computed values. 
+
+var fibonacci = (function ( ) {
+    var memo = [0, 1]; 
+    var fib = function (n) {
+        var result = memo[n]; 
+        if(typeof result !== 'number') {
+            result = fib(n -1) + fib(n - 2);
+            memo[n] = result; 
+        }
+        return result; 
+    };
+    return fib; 
+}( )); 
+
+// What the flip... We can write a memoizer function...
+
+var memoizer = function (memo, formula) {
+    var recur = function (n) {
+        var result = memo[n]; 
+        if (typeof result !== 'number') {
+            result = formula(recur, n); 
+            memo[n] = result; 
+        }
+        return result; 
+    }
+    return recur; 
+};
+
+// this is so freaking confusing. 
+
+var fibonacci = memoizer([0, 1], function (recur, n) {
+    return recur(n -1 ) + recur ( n -2 ); 
+});
+
+document.writeln(fibonacci(10)); 
+
+// freaking factorials I guess...
+
+var factorial = memoizer([1, 1], function (recur, n) {
+    return n * recur(n - 1); 
+});
+
+document.writeln(factorial(10)); 
+
+// Dude all these shakespeare quotes are awesome. 
+
+// Divides one thing entire to many objects; Like perspectives, which rightly gazed upon Show nothing but confustion.. 
+
+// We can define a constructor and augment its prototype: 
+
+var Mammal = function (name) {
+    this.name = name; 
+}
+
+Mammal.prototype.get_name = function ( ) {
+    return this.name; 
+};
+
+Mammal.prototype.says = function () {
+    return this.saying || ''; 
+};
+
+var myMammal = new Mammal('Herb the Mammal'); 
+var name = myMammal.get_name( ); 
+document.writeln('Name: ', name); 
+
+var Cat = function(name) {
+    this.name = name; 
+    this.saying = 'meow'; 
+};
+
+// Replace Cat.prototype with a new instance of Mammal
+
+Cat.prototype = new Mammal( ); 
+
+// Augment the new prototype with purr and get_name methods. 
+
+Cat.prototype.purr = function (n) {
+    var i, s = ''; 
+    for(i = 0; i < n; i +=1) {
+        if  (s) {
+            s += '-';
+        }
+
+        s += 'r'; 
+    }
+    return s; 
+};
+
+Cat.prototype.get_name = function ( ) {
+    return this.says( ) + ' ' + this.name + ' ' + this.says( ); 
+}; 
+
+var myCat = new Cat('Henrietta'); 
+var says = myCat.says( ); 
+var purr = myCat.purr(5); 
+var name = myCat.get_name( ); 
+
+document.writeln(`says: ${says} purr: ${purr} name: ${name}`)
+
+// This is kinda cool I guess. Still feel like I need a lot of practice to ever get it right...
+
+Function.method('inherits', function (Parent) {
+    this.prototype = new Parent( ); 
+    return this; 
+});
+
+// Out inherits and method methods return this, allowing us to program in a cascade style. 
+// We can now make our Cat with one statement...
+
+var Cat = function (name) {
+    this.name = name; 
+    this.saying = 'meow'
+}.
+    inherits(Mammal).
+    method('purr', function (n) {
+        var i, s = ''; 
+        for (i = 0; i < n; i += 1) {
+            if (s) {
+                s += '-'; 
+            }
+            s += 'r'; 
+        }
+        return s; 
+    }).
+    method('get_name', function ( ) {
+        return this.says( )  + ' ' + this.name + ' ' + this.says( ); 
+    });
+
+// This whole thing is a serious design error in the language. To mitigate this problem, there is a convention that all contructor functions are named with an intitial capital, and that nothing else is spelled with an initial capital. 
+// This givus us a prayer that visual inspection can find a missing new. A much better alternative is to not use new at all. 
+
+// This pseudoclassical form can provide comfort, but also hides the true nature of the language. 
+// JavaScript has more and better options. 
+
+// object specifiers. Pass an object into your function as arguments labeled. 
+
+// Prototypal inheritance we dispense with classes... Cool! 
+
+var myMammal = {
+    name: 'Herb the Mammal',
+    get_name: function ( ) {
+        return this.name; 
+    },
+    says: function ( ) {
+        return this.saying || ''; 
+    }
+};
+
+var myCat = Object.create(myMammal); 
+myCat.name = "Henrietta"; 
+myCat.saying = 'meow'; 
+myCat.purr = function (n) {
+    var i, s = ''; 
+    for (i = 0; i < n; i += 1) {
+        if (s) {
+            s += '-'; 
+        }
+        s += 'r'; 
+    }
+    return s; 
+};
+myCat.get_name = function ( ) {
+    return this.says() + ' ' + this.name + ' ' + this.says(); 
+}
+
+var block = function ( ) {
+    // remember the current scope. Make a new scope that includes everything from the current one. 
+
+    var oldScope = scope; 
+    scope = Object.create(scope); 
+
+    // Advance past the left curly brace. 
+
+    advance('{'); 
+
+    // Parse using the new scope. 
+
+    parse(scope); 
+
+    // Advance past the right curly brace and discard the new scope, restoring the old one. 
+
+    advance('}'); 
+    scope = oldScope; 
+};
+
+// Module pattern to keep properties private. 
+
+var mammal = function (spec) {
+    var that = {}; 
+
+    that.get_name = function ( ) {
+        return spec.name; 
+    };
+
+    that.says = function ( ) {
+        return spec.saying || ''; 
+    };
+
+    return that; 
+};
+
+var myMammal = mammal({ name: 'Herb'}); 
+
+
+var cat = function (spec) {
+    spec.saying = spec.saying || 'meow'; 
+    var that = mammal(spec); 
+    that.purr = function (n) {
+        var i, s = ''; 
+        for (i = 0; i < n; i+= 1) {
+            if (s) {
+                s += '-'; 
+            }
+            s += 'r'; 
+        }
+        return s; 
+    };
+    that.get_name = function () {
+        return that.says() + ' ' + spec.name + ' ' + that.says(); 
+    };
+    return that; 
+};
+
+var myCat = cat({ name: 'Henrietta'}); // Hmm that's kinda cool. 
 
