@@ -627,3 +627,29 @@ var cat = function (spec) {
 
 var myCat = cat({ name: 'Henrietta'}); // Hmm that's kinda cool. 
 
+Object.method('superior', function (name) {
+    var that = this, 
+    method = that[name]; 
+    return function ( ) {
+        return method.apply(that, arguments); 
+    }
+});
+
+// Let's try it out on a coolcat that is just like cat except it has a cooler get_name method that calls the super method. It requires just a little bit of preparation. 
+// We declare a super_get_name variable and assign it the result of invoking the superior method:
+
+var coolcat = function (spec) {
+    var that = cat(spec), 
+        super_get_name = that.superior('get_name'); 
+    that.get_name = function (n) {
+        return 'like ' + super_get_name( ) + ' baby'; 
+    };
+    return that; 
+};
+
+var myCoolCat = coolcat({name: 'Bix'});
+var name = myCoolCat.get_name( );
+
+document.writeln("myCoolCat: ", name); 
+
+
