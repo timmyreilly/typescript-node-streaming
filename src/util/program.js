@@ -725,3 +725,36 @@ var misc = [
 
 document.writeln(misc.length); 
 
+var myArray = []; 
+
+myArray[10000] = true; 
+document.writeln(myArray.length); 
+
+numbers[numbers.length] = "shi"; 
+numbers.push('go'); 
+
+document.writeln(numbers);
+delete numbers[10]; 
+document.writeln(numbers);
+numbers.splice(10, 1); 
+document.writeln(numbers);
+
+var i; 
+for (i = 0; i < numbers.length; i+= 1){
+    document.writeln(numbers[i]); 
+}
+
+// Rule for when to use objects vs arrays. 
+
+// When the property names are small sequential integers, you should use an array. Otherwise use an object. 
+
+var is_array = function (value) {
+    return value && typeof value === 'object' && value.constructor === Array; 
+};
+
+// How about foreign arrays that were constructed in a different window or frame? 
+
+var is_array_better = function(value) {
+    return Object.prototype.toString.apply(value) === '[object Array]'; 
+};
+
