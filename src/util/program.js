@@ -758,3 +758,4 @@ var is_array_better = function(value) {
     return Object.prototype.toString.apply(value) === '[object Array]'; 
 };
 
+// This is challenging
