@@ -760,3 +760,138 @@ var is_array_better = function(value) {
 
 // This is challenging
 // Okay how about this... 
+
+// You should use an array when the property names are small sequential integers. Otherwise use an object. 
+
+Array.method('reduce', function(f, value){
+    var i; 
+    for(i = 0; i <this.length; i+=1){
+        value = f(this[i], value); 
+    }
+    return value; 
+})
+
+var data = [4, 5, 6, 8, 543, 3]; 
+
+// Define two simple functions one will add two numbers. The other will multiply two numbers. 
+
+var add = function (a, b){
+    return a + b; 
+};
+
+var mult = function (a, b) {
+    return a * b; 
+};
+
+// Invoke the data's reduce method, passing in the add function. 
+
+var sum = data.reduce(add, 0); 
+document.writeln(sum); 
+
+var product = data.reduce(mult, 1); 
+
+// Because an array is really an object, we can add methods directly to an indiviual array. 
+
+data.total = function() {
+    return this.reduce(add, 0); 
+};
+
+total = data.total(); 
+
+document.writeln(total); 
+
+Array.dim = function(dimension, initial) {
+    var a = [], i; 
+    document.writeln('a: ', a); 
+    for (i = 0; i < dimension; i += 1) {
+        a[i] = initial; 
+    }
+    return a; 
+}
+
+// Make an array containing all zeros. 
+var myArray = Array.dim(10, 0); 
+
+var matrix = [
+    [0, 1, 2], 
+    [3, 4, 5], 
+    [6, 7, 8]
+];
+
+document.writeln(matrix[2][1]);
+
+// Two dimensional arrays are on you to build. 
+
+// for (i = 0; i < n; i += 1){
+//     my_array[i] = []; 
+// }
+
+// Note: Array.dom(n, []) will not work here. Each element would get a reference to the same array, which would be very bad. 
+
+Array.matrix = function(m, n, initial){
+    var a, i, j, mat = []; 
+    for (i = 0; i < m; i+= 1){
+        a =[]; 
+        for (j = 0; j < n; j += 1) {
+            a[j] = initial; 
+        }
+        mat[i] = a; 
+    }
+    return mat; 
+};
+
+// Make a 4 * 4 Matrix filled with zeros. 
+
+var myMatrix = Array.matrix(4, 4, 0); 
+document.writeln(myMatrix[3][3]); 
+
+// Method to make an identity matrix. 
+
+Array.identify = function(n) {
+    var i, mat = Array.matrix(n, n, 0); 
+    document.writeln('mat: ', mat); 
+    for ( i = 0; i < n; i += 1) {
+        mat[i][i] = 1; 
+    }
+    document.writeln('mat: ', mat); 
+    
+    return mat; 
+};
+
+myMatrix = Array.identify(4); 
+
+document.writeln(myMatrix[3][3]); 
+
+// Wheras the contrary bringeth bliss, And is a pattern of celestial peace. Whom should we match with Henry, being a king...
+
+// parse url: 
+
+var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/; 
+
+var url = "http://www.ora.com:80/goodparsts?q#fragment"; 
+
+var result = parse_url.exec(url); 
+
+var names = ['url', 'scheme', 'slash', 'host', 'port', 'path', 'query', 'hash']; 
+
+var blanks = '        '; 
+var i; 
+
+for (i = 0; i < names.length; i +=1) {
+    document.writeln(names[i] + ':' + blanks.substring(names[i].length), result[i]); 
+}
+
+var parse_number = /^-?\d+(?:\.\d*)?(?:e[+\-]?\d+)?$/i;
+var test = function(num){
+    document.writeln(num, ': ', parse_number.test(num)); 
+} 
+
+test('1'); 
+test('number'); 
+test('98.6'); 
+test('132.21.86.100'); 
+test('123.45E-67'); 
+test('123.45D-56');
+test('0.4');  
+
+
